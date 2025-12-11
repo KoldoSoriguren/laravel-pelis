@@ -8,9 +8,13 @@
 <body>
    
     @auth
-    Bienvenido, {{ session('user_name') }}
+        Bienvenido, {{ session('user_name') }}
+        <a href="{{route('sesion.destroy')}}">Cerrar sesion</a>
+        <a href="{{route('peli.crear')}}">Nueva peli</a>
+
     @else
      <a href="{{route('sesion.iniciar')}}">Iniciar sesion</a>
+     
     @endauth
 
 
@@ -26,17 +30,22 @@
             <td>{{ $pelicula->duracion_min }}</td>
             <td>{{ $pelicula->clasificacion }}</td>
             <td>
-                {{-- <a href="{{route('pelis.detalles')}}">Ver detalles</a>
+                <a href="{{ route('pelis.detalles', $pelicula->id) }}">Ver detalles</a>
                 @auth
-                    <a href="{{route('pelis.editar')}}">Editar</a>
-                    <a href="{{route('pelis.eliminar')}}">Eliminar</a>
-                @endauth --}}
+                    <a href="{{ route('pelis.editar', $pelicula->id) }}">Editar</a>
+                    <form action="{{ route('pelis.borrar', $pelicula->id) }}" method="POST" style="display:inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Eliminar</button>
+                    </form>
+                @endauth
             </td>
+
         </tr>
     @endforeach
 
 </table>
-    
+
 
 {{-- <form action="{{ route('idioma.cambiar') }}" method="POST" class="d-flex gap-2 align-items-center">
     @crsf

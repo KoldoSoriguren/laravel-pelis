@@ -20,13 +20,22 @@ class UserController extends Controller
 
             $user = Auth::user();
             $request->session()->put('user_name', $user->nombre);
-            dd( $request->session()->all() );
-            return redirect()->intended('peliculas.index');
+            return redirect()->intended(route('peliculas.index'));
         }
 
         return back()->withErrors([
             'email' => 'Las credenciales proporcionadas no son correctas.',
         ])->onlyInput('email');
+    }
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect()->intended(route('peliculas.index'));
     }
     
 }

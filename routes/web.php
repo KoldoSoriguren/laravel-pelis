@@ -19,4 +19,13 @@ Route::get('/index', [PeliculaController::class, 'index'])->name('peliculas.inde
 Route::get('/sesion/iniciar', [UserController::class, 'iniciar'])->name('sesion.iniciar');
 Route::post('/sesion/iniciar', [UserController::class, 'login'])->name('sesion.iniciada');
 Route::post('/idioma/cambiar', [UserController::class, 'cambiarIdioma'])->name('idioma.cambiar');
+Route::get('/sesion/cerrar', [UserController::class, 'cerrar'])->name('sesion.cerrar');
 
+
+Route::get('/peliculas/ver/{id}', [PeliculaController::class, 'show'])->name('pelis.detalles');
+Route::delete('/peliculas/borrar/{id}', [PeliculaController::class, 'destroy'])->name('pelis.borrar');
+Route::get('/peliculas/{id}/editar', [PeliculaController::class, 'edit'])->name('pelis.editar');
+Route::get('/sesion/logout',[UserController::class, 'logout'])->name('sesion.destroy');
+Route::post('/palicula/{id}/editafa',[PeliculaController::class, 'update'])->name('pelicula.editada');
+Route::get('/pelicula/crear',[PeliculaController::class, 'create'])->name('peli.crear');
+Route::post('/pelicula/guardada',[PeliculaController::class, 'store'])->name('peli.guardada');
