@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
@@ -37,5 +41,40 @@ class UserController extends Controller
 
         return redirect()->intended(route('peliculas.index'));
     }
+    public function cambiaIdioma(Request $request){
+        Cookie::queue('idioma', $request->idioma, 60*24*30);
+        return back();
+    }
+    public function creaCuent(){
+        return view('user.sign');
+    }
+    public function cuentaCreada(Request $request)
+    {
+        // Validar datos del formulario
+        $validated = $request->validate([
+            'nombre' => 'required|string|max:100',
+            'email' => [
+                'required',
+                'email',
+                'max:150',
+                Rule::unique('users', 'email') // email único en la tabla users
+            ],
+            'password' => 'required|string', // confirmed requiere password_confirmation
+        ]);
+        // Crear el usuario
+        $user = User::create([
+            'nombre' => $validated['nombre'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']), // hashear la contraseña
+        ]);
+
+        // Opcional: iniciar sesión automáticamente
+        Auth::login($user);
+
+        // Redirigir a la página principal de películas
+        return redirect()->route('peliculas.index')->with('success', 'Cuenta creada correctamente.');
+    }
+
+    
     
 }

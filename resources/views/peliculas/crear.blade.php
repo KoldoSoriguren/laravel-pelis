@@ -1,40 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Nueva Película</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
+<body class="bg-light">
 
-        <h1>Nueva pelicula</h1>
+<div class="container py-4">
+    <h1 class="mb-4">Nueva Película</h1>
+
     <form action="{{ route('peli.guardada') }}" method="POST">
         @csrf
-        <label for="titulo">Título:</label>
-        <input type="text" id="titulo" name="titulo" required><br>
-
-        <label for="director">Director:</label>
-        <input type="text" id="director" name="director"  required><br>
-
-        <label for="genero">Género:</label>
-        <input type="text" id="genero" name="genero" required><br>
-
-        <label for="sinopsis">Sinopsis:</label>
-        <textarea id="sinopsis" name="sinopsis" required></textarea><br>
-
-        <label for="fecha_estreno">Fecha de estreno:</label>
-        <input type="date" id="fecha_estreno" name="fecha_estreno" required><br>
-
-        <label for="duracion_min">Duración (min):</label>
-        <input type="number" id="duracion_min" name="duracion_min"  required><br>
-
-        <label for="clasificacion">Clasificación:</label>
-        <input type="text" id="clasificacion" name="clasificacion"  required><br>
-
-        <button type="submit">Crear</button>
+        <div class="mb-3">
+            <input type="text" name="titulo" class="form-control" placeholder="Título" required>
+        </div>
+        <div class="mb-3">
+            <input type="text" name="director" class="form-control" placeholder="Director" required>
+        </div>
+        <div class="mb-3">
+            <input type="text" name="genero" class="form-control" placeholder="Género" required>
+        </div>
+        <div class="mb-3">
+            <textarea name="sinopsis" class="form-control" placeholder="Sinopsis" required></textarea>
+        </div>
+        <div class="mb-3">
+            <input type="date" name="fecha_estreno" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <input type="number" name="duracion_min" class="form-control" placeholder="Duración (min)" required>
+        </div>
+        <div class="mb-3">
+            <select name="clasificacion" class="form-select" required>
+                <option value="" disabled selected>Selecciona clasificación</option>
+                <option value="ATP">ATP</option>
+                <option value="+7">+7</option>
+                <option value="+13">+13</option>
+                <option value="+18">+18</option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Crear</button>
+        <a href="{{ route('peliculas.index') }}" class="btn btn-secondary ms-2">Volver al listado</a>
     </form>
-    <a href="{{ route('peliculas.index') }}">Volver a la listado</a>
-    
+</div>
+
 </body>
 </html>
