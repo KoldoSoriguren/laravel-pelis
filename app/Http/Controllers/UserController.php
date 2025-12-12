@@ -57,23 +57,27 @@ class UserController extends Controller
                 'required',
                 'email',
                 'max:150',
-                Rule::unique('users', 'email') // email único en la tabla users
+                \Illuminate\Validation\Rule::unique('users', 'email') // email único
             ],
-            'password' => 'required|string', // confirmed requiere password_confirmation
+            'password' => 'required|string|confirmed', // confirmed requiere password_confirmation
         ]);
+        
         // Crear el usuario
-        $user = User::create([
+        $user = \App\Models\User::create([
             'nombre' => $validated['nombre'],
             'email' => $validated['email'],
-            'password' => Hash::make($validated['password']), // hashear la contraseña
+            'password' => \Illuminate\Support\Facades\Hash::make($validated['password']), // hashear
         ]);
 
-        // Opcional: iniciar sesión automáticamente
-        Auth::login($user);
+        // Guardar datos del usuario en sesión
+        $request->session()->put('user_id', $user->id);
+        $request->session()->put('user_name', $user->nombre);
+        $request->session()->put('user_email', $user->email);
 
         // Redirigir a la página principal de películas
         return redirect()->route('peliculas.index')->with('success', 'Cuenta creada correctamente.');
     }
+
 
     
     
